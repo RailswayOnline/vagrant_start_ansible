@@ -1,0 +1,28 @@
+---
+- name: 'apt-get update'
+  action: 'apt update_cache=yes'
+
+- name: 'install dependencies for ruby'
+  action: 'apt pkg={{ item }}'
+  with_items:
+    # install some dependencies for Ruby
+    - 'build-essential'
+    - 'libssl-dev'
+    - 'libyaml-dev'
+    - 'curl'
+    - 'libcurl4-openssl-dev'
+    - 'libreadline-dev'
+    - 'zlib1g-dev'
+    - 'libxml2-dev'
+    - 'libxslt1-dev'
+    - 'python-software-properties'
+    - 'libffi-dev'
+    - 'nodejs'
+    - 'git-core'
+    # install some dependencies for RVM
+    - 'libgdbm-dev'
+    - 'libncurses5-dev'
+    - 'automake'
+    - 'libtool'
+    - 'bison'
+    - 'libffi-dev'

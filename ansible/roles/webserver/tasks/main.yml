@@ -1,0 +1,5 @@
+---
+- include: pakages.yml
+- include: settings.yml
+- include: create_user.yml
+- include: pre_deploy.yml

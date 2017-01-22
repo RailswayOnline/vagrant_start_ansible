@@ -1,0 +1,21 @@
+---
+- name: 'create user and added in sudo group'
+  user:
+    name: '{{ user }}'
+    password: '{{ password_user }}'
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+
+- name: 'set authorized keys'
+  authorized_key:
+    user: '{{ user }}'
+    state: present
+    key: "{{ lookup('file', '/Users/evgeniy/.ssh/id_rsa.pub') }}"
+
+- name: 'copy user config in /etc/sudoers.d'
+  template:
+    src: config/user_conf
+    dest: '/etc/sudoers.d/{{ user }}'
+    owner: root
+    group: root

@@ -1,0 +1,23 @@
+---
+- hosts: 'all'
+  become: true
+
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - webserver
+    - nginx
+    - postgresql
+    - { role: rvm_io.ruby,
+        tags: ruby,
+        become: yes,
+
+        rvm1_rubies: ['ruby-{{ ruby_version }}'],
+        rvm1_install_flags: '--auto-dotfiles --user-install',
+        rvm1_install_path: '{{ rvm_path }}',
+        rvm1_user: '{{ user }}',
+        rvm1_rvm_version: 'stable',
+        rvm1_bundler_install: True
+      }
+    - create_gemset

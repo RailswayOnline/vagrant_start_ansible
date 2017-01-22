@@ -1,0 +1,71 @@
+---
+- name: 'create deployment directory for application'
+  file:
+    path: '{{ application_path }}'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    state: directory
+    mode: 0775
+
+- name: 'create shared/config directory'
+  file:
+    path: '{{ shared_path }}/config'
+    state: directory
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 0775
+
+- name: 'copy config/secrets.yml'
+  copy:
+    src: config/secrets.yml
+    dest: '{{ shared_path }}/config/secrets.yml'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 0644
+
+- name: 'copy config/database.yml'
+  template:
+    src: config/database.yml
+    dest: '{{ shared_path }}/config/database.yml'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 0644
+
+- name: 'copy config/cable.yml'
+  template:
+    src: config/cable.yml
+    dest: '{{ shared_path }}/config/cable.yml'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 0644
+
+- name: 'copy config/puma.rb'
+  template:
+    src: config/puma.rb
+    dest: '{{ shared_path }}/config/puma.rb'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 0644
+
+- name: 'check file .gemrc'
+  file:
+    path: '{{ home_path }}/.gemrc'
+    state: file
+  register: file_not_exist
+  ignore_errors: True
+
+- name: 'create file .gemrc'
+  file:
+    path: '{{ home_path }}/.gemrc'
+    state: touch
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 664
+  when: file_not_exist|failed
+
+- name: 'add --no-ri --no-rdoc to .gemrc'
+  lineinfile:
+    dest: '{{ home_path }}/.gemrc'
+    regexp: 'gem: --no-ri --no-rdoc'
+    line: 'gem: --no-ri --no-rdoc'
+    state: present

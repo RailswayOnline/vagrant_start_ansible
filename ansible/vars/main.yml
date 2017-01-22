@@ -1,0 +1,24 @@
+---
+ruby_version: '2.3.3'
+user: 'deployer'
+password_user: $6$rounds=656000$ZWVqei8p2LFcDg4k$IGxPqDItlb.wHlq5u25nosec4trU7TcOthTn9ATpno2eLbeai4kVYkeR6xJ4J/jb/kZKkuIL4b0XL6wKmbIoS1
+name_app: 'vagrant_start_ansible'
+# path
+home_path: '/home/{{ user }}'
+rvm_path: '{{ home_path }}/.rvm'
+application_path: '{{ home_path }}/{{ name_app }}'
+shared_path: '{{ application_path }}/shared'
+# for database
+password_db: md5d8578edf8458ce06fbc5bb76a58c5ca4
+name_db: '{{ name_app }}_production'
+# for nginx config
+server_name: 'localhost'
+
+
+# Generate password_user:
+# local_machine$ pip install passlib
+# local_machine$ python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_crypt.encrypt(getpass.getpass())"
+# local_machine$ Password:
+
+# Generate password_db:
+# local_machine$ echo "md5`echo -n "very_secret_password" | md5`"

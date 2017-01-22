@@ -1,0 +1,14 @@
+---
+- name: 'detect rvm binary'
+  stat: path='{{ rvm_path }}/bin/rvm'
+  register: rvm_binary
+
+- name: 'detect app gemset'
+  stat: path='{{ rvm_path }}/gems/ruby-{{ ruby_version }}@{{ name_app }}'
+  register: rvm_gemset
+  when: rvm_binary.stat.exists
+
+- name: 'create app gemset'
+  become_user: '{{ user }}'
+  command: '{{ rvm_path }}/bin/rvm gemset create {{ name_app }}'
+  when: not rvm_gemset.stat.exists

@@ -1,0 +1,7 @@
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: {{ name_db }}
+  username: {{ user }}
+  password: '{{ password_db }}'
+  pool: 20

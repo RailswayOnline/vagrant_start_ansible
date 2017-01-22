@@ -1,0 +1,25 @@
+---
+  - name: 'apt-get update'
+    action: 'apt update_cache=yes'
+
+  - name: 'install postgresql with dependencies'
+    action: 'apt pkg={{ item }}'
+    with_items:
+      - 'postgresql'
+      - 'postgresql-contrib'
+      - 'libpq-dev'
+      - 'python-psycopg2'
+
+  - name: 'create user'
+    become: yes
+    become_user: postgres
+    postgresql_user:
+      name: '{{ user }}'
+      password: '{{ password_db }}'
+
+  - name: 'create database'
+    become: yes
+    become_user: postgres
+    postgresql_db:
+      name: '{{ name_db }}'
+      owner: '{{ user }}'

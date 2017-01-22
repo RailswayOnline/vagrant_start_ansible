@@ -1,0 +1,24 @@
+---
+- name: 'install nginx'
+  apt: name=nginx update_cache=yes
+
+- name: 'delete symlink default config'
+  file:
+    path: '/etc/nginx/sites-enabled/default'
+    state: absent
+
+- name: 'copy nginx.vagrant.conf'
+  template:
+    src: nginx.vagrant.conf
+    dest: '/etc/nginx/sites-available/{{ name_app }}'
+    owner: root
+    group: root
+    mode: 0644
+
+- name: 'create new symlink for app config'
+  file:
+    src: '/etc/nginx/sites-available/{{ name_app }}'
+    dest: '/etc/nginx/sites-enabled/{{ name_app }}'
+    state: link
+  notify:
+    - restart nginx
