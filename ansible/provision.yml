@@ -9,6 +9,7 @@
     - webserver
     - nginx
     - postgresql
+    - redis
     - { role: rvm_io.ruby,
         tags: ruby,
         become: yes,
